@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proof-Carrying Models — defensive publication</title>
+<meta name="description" content="A model artifact that can prove its own history: lineage from null, and eval claims that count only with reproducible digests. The tier is derived, never declared. Public domain, prior art.">
+<style>
+:root{
+  --bg:#faf9f6; --ink:#241c12; --muted:#6b5d49; --accent:#92400e; --accent-2:#b45309;
+  --card:#ffffff; --line:#e8dfd2; --mono-bg:#f5f0e8; --good:#15803d; --warn:#b45309; --bad:#b91c1c;
+}
+@media (prefers-color-scheme: dark){:root{
+  --bg:#171208; --ink:#f2e9dc; --muted:#b3a188; --accent:#f59e0b; --accent-2:#fbbf24;
+  --card:#211a0e; --line:#3a2f1c; --mono-bg:#231b0d; --good:#4ade80; --warn:#fbbf24; --bad:#f87171;
+}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 "Iowan Old Style","Palatino Linotype",Georgia,serif}
+.banner{background:var(--accent);color:var(--bg);font:600 12px/1.4 system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;padding:10px 20px;text-align:center}
+main{max-width:72ch;margin:0 auto;padding:32px 20px 64px}
+h1{font-size:2.3rem;line-height:1.15;margin:.4em 0 .2em;text-wrap:balance}
+h2{font-size:1.25rem;margin:2.2em 0 .5em;color:var(--accent);letter-spacing:.01em}
+.kicker{font:600 13px/1.5 system-ui,sans-serif;color:var(--muted);letter-spacing:.09em;text-transform:uppercase}
+.lede{font-size:1.12rem;color:var(--muted)}
+a{color:var(--accent-2)}
+table{border-collapse:collapse;width:100%;font:14px/1.5 system-ui,sans-serif}
+.tablewrap{overflow-x:auto;margin:1em 0}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-weight:600;color:var(--muted)}
+code,.mono{font:13.5px/1.6 ui-monospace,Consolas,monospace;background:var(--mono-bg);border-radius:4px;padding:1px 5px}
+.law{background:var(--mono-bg);border-left:3px solid var(--accent);border-radius:6px;padding:12px 16px;font:14px/1.7 ui-monospace,Consolas,monospace;overflow-x:auto;white-space:pre}
+.demo{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;margin:1.4em 0;font-family:system-ui,sans-serif}
+.demo h3{margin:0 0 6px;font-size:1rem;color:var(--accent)}
+.demo p{font-size:14px;color:var(--muted);margin:.3em 0 1em}
+button{font:600 14px system-ui,sans-serif;background:var(--accent);color:var(--bg);border:0;border-radius:8px;padding:9px 16px;cursor:pointer}
+button:hover{background:var(--accent-2)}
+button.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+button:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px}
+.out{font:13.5px/1.7 ui-monospace,Consolas,monospace;background:var(--mono-bg);border-radius:8px;padding:12px 14px;margin-top:12px;overflow-x:auto;min-height:1.5em;white-space:pre-wrap}
+.tier{display:inline-block;font:700 12px/1 system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;border-radius:99px;padding:6px 12px}
+footer{border-top:1px solid var(--line);margin-top:48px;padding-top:18px;font:13px/1.7 system-ui,sans-serif;color:var(--muted)}
+.honest{border:1px solid var(--line);border-radius:12px;padding:4px 18px;margin:1em 0;background:var(--card)}
+@media (prefers-reduced-motion: no-preference){button{transition:background .15s}}
+</style>
+</head>
+<body>
+<div class="banner">Defensive publication · disclosed 30 August 2026 · CC0-1.0 · this page is prior art</div>
+<main>
+<p class="kicker">Publication III of the edge-AI family · the trust rail, pointed at weights</p>
+<h1>Proof-Carrying Models</h1>
+<p class="lede">A model artifact that can prove its own history: what it was trained on, in what
+order, and which evaluation claims about it are evidence rather than theatre. The deciding
+property: <strong>the tier is derived, never declared</strong> — an artifact claiming "proven" gets
+what it earned, and nothing written on the artifact can say otherwise.</p>
+
+<p>Model cards and leaderboards are assertions — the reader trusts the publisher. Regulation is
+about to demand what only a mechanism can honestly supply. This mechanism makes the claims
+checkable arithmetic: anyone holding the artifact and its chain re-derives the tier. The document
+of record is the <a href="https://github.com/sjgant80-hub/proof-carrying-models">README of this
+repository</a>; this page carries the mutation-gated reference law, runnable below.</p>
+
+<h2>1 · Step identity — the closed set</h2>
+<p>A training step is exactly <code>{ parent, data, note? }</code>, hashed over a canonical
+serialization so identity depends on content, never key order. Any other field refuses
+<em>by name</em>: what the hash does not cover, the chain cannot vouch for — an unhashed field is a
+smuggling channel that would let two different artifacts share an identity. The hash is frozen and
+pinned by test: changing it would orphan every existing lineage, so the suite makes that loud.</p>
+
+<h2>2 · The lineage — begins at null, or it hides something</h2>
+<div class="law">step 0: parent must be null      — "fine-tuned from something we won't name" is the hole this closes
+step n: parent === id(step n−1) — the first break is named by index
+any tamper, anywhere            — changes that id and severs everything after it</div>
+
+<h2>3 · The verdict — the anti-theatre rule</h2>
+<p>An eval claim counts only if it names the chain head it actually evaluated <em>and</em> carries a
+reproducible digest <em>and</em> scores in [0,1]. A claim failing any test is <strong>ignored and
+listed with its reason</strong> — not an error, just nothing. Then:
+valid chain → <code>lineaged</code> · 1–2 counting evals → <code>evaluated</code> · ≥3 counting
+with mean ≥ κ (0.618) → <code>proven</code>. Three weak evals stay evaluated:
+<em>quantity is not quality.</em></p>
+
+<div class="demo">
+<h3>Run the reference law — attest an artifact</h3>
+<p>A 3-step lineage and four eval claims: one honest, one with no digest, one that evaluated a
+different artifact, one with an impossible score. Then tamper with the middle training step and
+watch every step after it sever.</p>
+<div style="display:flex;gap:10px;flex-wrap:wrap">
+<button id="attestBtn">build lineage → attest</button>
+<button id="tamperBtn" class="ghost">tamper with the middle step, then attest</button>
+</div>
+<div class="out" id="pcmOut">the verdict will derive here</div>
+</div>
+
+<h2>What already runs · what must catch up</h2>
+<div class="honest">
+<p><strong>Gated and live today:</strong> the reference law in this page (35/36 killed + 1 argued
+equivalent, the argument in the baseline) ·
+<a href="https://github.com/sjgant80-hub/proven-web">proven-web</a> (signed, expiring verdicts) ·
+<a href="https://github.com/sjgant80-hub/fallineage">fallineage</a> (Ed25519 chains) ·
+<a href="https://github.com/sjgant80-hub/kcc-mint">kcc-mint</a> (provenance at 1,410-repo scale) —
+and the estate runs derived-not-declared tiers in production over 90+ repos.</p>
+<p><strong>The honest speculation:</strong> training loops emitting signed steps natively · an
+ecosystem convention for what an eval digest digests. <strong>Not claimed:</strong> that a digest is
+honest — only that a claim without one is <em>nothing</em>; the gate moves dishonesty from cheap
+assertion to forgeable artifact, where cryptography already applies.</p>
+</div>
+
+<h2>Claims anticipated</h2>
+<p>Content-addressed training-step identity with closed field sets · lineage chains required to
+originate at null · refusal-by-name of undeclared step metadata · eval claims gated on
+artifact-head match and reproducibility digests · certification tiers for AI models derived by
+counting verified evidence · artifacts carrying their own attestation.
+<strong>Prior art here, dated by first commit.</strong></p>
+
+<footer>
+<p>Built on the <strong>Konomi architecture</strong>, created by <strong>Thomas Frumkin</strong>
+(<a href="https://konomi-systems.com">konomi-systems.com</a>) — lineage Thomas → Jim → Simon.
+The estate builds WITH Konomi. Published CC0-1.0 — no rights reserved, deliberately.
+<a href="https://sjgant80-hub.github.io/fallworld/">The estate</a>.</p>
+</footer>
+</main>
+<script>
+/*__KERNEL_START__*/
+/*__KERNEL_END__*/
+(function(){
+  const A=window.ATTEST;
+  const buildChain=()=>{
+    const steps=[];let parent=null;
+    ['sha256:common-crawl-slice','sha256:instruct-mix','sha256:safety-tune'].forEach((data,i)=>{
+      steps.push({parent,data,note:'step '+i});parent=A.stepId(steps[i]).id;
+    });
+    return steps;
+  };
+  const run=(tampered)=>{
+    const steps=buildChain();
+    if(tampered) steps[1]={...steps[1],data:'sha256:SOMETHING-ELSE'};
+    const chain=A.chainValid(steps);
+    const out=document.getElementById('pcmOut');
+    if(!chain.ok){out.textContent='LINEAGE REFUSED — '+chain.why+'\n\nno chain, no verdict: an artifact that cannot show its history gets nothing.';return}
+    const head=chain.head;
+    const evals=[
+      {name:'mmlu-run',head,score:0.71,digest:'sha256:harness+data+seed'},
+      {name:'braggart',head,score:0.99},
+      {name:'stale-eval',head:'deadbeefdeadbeef',score:0.9,digest:'sha256:old-run'},
+      {name:'sloppy',head,score:1.7,digest:'sha256:oops'}
+    ];
+    const v=A.attest(steps,evals);
+    out.textContent='chain ✓ head '+head+' depth '+v.depth+
+      '\n\ncounted ('+v.verified.length+'):'+v.verified.map(e=>'\n  ✓ '+e.name+' @ '+e.score).join('')+
+      '\n\nignored ('+v.ignored.length+'):'+v.ignored.map(e=>'\n  ∅ '+e.name+' — '+e.why).join('')+
+      '\n\nTIER, DERIVED: '+v.tier.toUpperCase();
+  };
+  document.getElementById('attestBtn').addEventListener('click',()=>run(false));
+  document.getElementById('tamperBtn').addEventListener('click',()=>run(true));
+})();
+</script>
+</body>
+</html>

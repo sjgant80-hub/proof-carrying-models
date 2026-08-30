@@ -1,0 +1,8 @@
+[
+  {
+    "line": 64,
+    "mutation": "> → >=",
+    "snippet": "if (i > 0 && steps[i].parent !== prev) return { ok: false, why: `step ${i}: parent does no",
+    "reason": "equivalent by unreachability: at i=0 prev is null, and the begins-at-null guard has already returned for any non-null parent — so (null !== null) is false and the mutated i>=0 clause can never change an outcome"
+  }
+]
